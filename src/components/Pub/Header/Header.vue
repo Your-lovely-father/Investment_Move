@@ -14,13 +14,9 @@
                 :with-header="false"
         >
             <ul class="nav">
-                <router-link to="/" tag="li">首页</router-link>
-                <router-link to="/advantage" tag="li">平台优势</router-link>
-                <router-link to="/honor" tag="li">企业荣誉</router-link>
-                <router-link to="/league" tag="li">招商加盟</router-link>
-                <router-link to="/product" tag="li">产品与案例</router-link>
-                <router-link to="/relation" tag="li">联系我们</router-link>
-                <router-link to="/about" tag="li">关于我们</router-link>
+                <li  v-for="(item, index) in navList"  :key="index">
+                    <router-link :to="item.link" tag="li">{{ item.name }}</router-link>
+                </li>
             </ul>
         </el-drawer>
 
@@ -28,12 +24,59 @@
 </template>
 
 <script>
+    import Api from '../../../api/pub/pub'
+
     export default {
         name: "Header",
         data() {
             return {
                 drawer: false,
+                navList: [
+                    {
+                        link: '/',
+                        name: ''
+                    }, {
+                        link: '/advantage',
+                        name: '',
+                    },
+                    {
+                        link: '/honor',
+                        name: ''
+                    },
+                    {
+                        link: '/league',
+                        name: ''
+                    },
+                    {
+                        link: '/product',
+                        name: ''
+                    },
+                    {
+                        link: '/relation',
+                        name: ''
+                    },
+                    {
+                        link: '/about',
+                        name: ''
+                    },
+                ],
             };
+        },
+        methods: {
+            getNav() {
+                Api.getNav().then((res) => {
+                    this.navList[0].name = res.data[0].name,
+                    this.navList[1].name = res.data[1].name,
+                    this.navList[2].name = res.data[2].name,
+                    this.navList[3].name = res.data[3].name,
+                    this.navList[4].name = res.data[4].name,
+                    this.navList[5].name = res.data[5].name,
+                    this.navList[6].name = res.data[6].name
+                })
+            },
+        },
+        mounted() {
+            this.getNav()
         }
     }
 </script>
@@ -84,11 +127,13 @@
         font-size: 10px;
         text-align: center;
     }
-    .nav>li{
+
+    .nav > li {
         line-height: 70px;
     }
-    .nav>li:hover{
-        background-color:black;
+
+    .nav > li:hover {
+        background-color: black;
         color: #ffffff;
     }
 </style>
